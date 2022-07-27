@@ -25,9 +25,7 @@ function App() {
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
       category: "anotacoes"
     },
-  ];
-
- 
+  ]; 
 
   const [notes, setNotes] = useState(noteList); 
   const [filterNotes, setFilterNotes] = useState([]);
@@ -41,10 +39,13 @@ function App() {
 
   const [counter, setCounter] = useState(noteList.length); 
 
+  // UseEffect de atualização
   useEffect(() => {
+    //Filtragem utilizando o filter como método dinâmico
     const newFilter = notes.filter((note) => note.category === filter);
     setFilterNotes(newFilter);
   }, [filter, notes]);
+  //Cada vez que filter ou notes é alterado a função no primeiro parâmetro do useEffect é disparada
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -79,6 +80,7 @@ function App() {
   return (
     <div className="App">
       <div>
+        { /* Os botões alteram o estado filter (que dispara o efeito) */}
         <button onClick={() => setFilter("")}>Filtrar</button>        
         <button onClick={() => setFilter("tarefas")}>Tarefas</button>
         <button onClick={() => setFilter("recados")}>Recados</button>
