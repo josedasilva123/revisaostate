@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
@@ -11,67 +11,80 @@ function App() {
       id: 0,
       title: "Nota 1",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
+      category: "recados"
     },
     {
       id: 1,
       title: "Nota 2",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
+      category: "tarefas"
     },
     {
       id: 2,
       title: "Nota 3",
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
+      category: "anotacoes"
     },
   ];
 
-  /* GET / SET --- useState(valorInicial) */
+ 
 
-  const [notes, setNotes] = useState(noteList); //Estado que recebe a lista de notas
+  const [notes, setNotes] = useState(noteList); 
+  const [filterNotes, setFilterNotes] = useState([]);
+  const [filter, setFilter] = useState("");
+
   const [formData, setFormData] = useState({
     title: "",
     text: "",
-  }); //Estado que recebe os valores dos campos do formulário e condensa em um objeto
-  const [counter, setCounter] = useState(noteList.length); //Contador com valor inicial com base na lista
+    category: "tarefas"
+  }); 
 
-  /* Função de criação de notas por meio submit de formulário */
+  const [counter, setCounter] = useState(noteList.length); 
+
+  useEffect(() => {
+    const newFilter = notes.filter((note) => note.category === filter);
+    setFilterNotes(newFilter);
+  }, [filter, notes]);
+
   function handleSubmit(e) {
     e.preventDefault();
 
-    //Validação simples para verificar se os campos estão preenchidos
     if (formData.title === "" || formData.text === "") {
       alert("Preencha os campos antes de enviar");
     } else {
-      //Criar um nova nota, pegando o counter como id os valores do formData para os demais campos
       const newNote = {
         id: counter,
         title: formData.title,
         text: formData.text,
+        category: formData.category
       };
-
-      //Altera o estado de notas, pegando todas as notas atuais e adicionando a nova nota
+      
       setNotes([...notes, newNote]);
 
-      //Incrementa o contador para evitar ids repetidos
       setCounter(counter + 1);
-
-      //Limpa os campos do formulário, atribuindo valores vazios a title e text
+      
       setFormData({
         title: "",
         text: "",
+        category: "tarefas",
       });
     }
   }
 
-  //Função de remover
   function handleRemove(id){
-    //Filtragem mantendo todos os itens com exceção do que a id do enviado (remoção de item)
     const newList = notes.filter((note) => note.id !== id);
-    setNotes(newList); //Atribui a newList como valor de notes
+    setNotes(newList); 
   }
 
   return (
     <div className="App">
-      <NoteList notes={notes} handleRemove={handleRemove} />
+      <div>
+        <button onClick={() => setFilter("")}>Filtrar</button>        
+        <button onClick={() => setFilter("tarefas")}>Tarefas</button>
+        <button onClick={() => setFilter("recados")}>Recados</button>
+        <button onClick={() => setFilter("anotacoes")}>Anotações</button>
+      </div>
+      <NoteList notes={notes} filterNotes={filterNotes} handleRemove={handleRemove} />
       <NoteForm handleSubmit={handleSubmit} formData={formData} setFormData={setFormData} />      
     </div>
   );
