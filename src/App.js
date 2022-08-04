@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
+import NotesFilter from "./components/NotesFilter";
 
 function App() {
   const noteList = [
@@ -45,6 +46,7 @@ function App() {
     const newFilter = notes.filter((note) => note.category === filter);
     setFilterNotes(newFilter);
   }, [filter, notes]);
+  
   //Cada vez que filter ou notes é alterado a função no primeiro parâmetro do useEffect é disparada
 
   function handleSubmit(e) {
@@ -79,13 +81,7 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        { /* Os botões alteram o estado filter (que dispara o efeito) */}
-        <button onClick={() => setFilter("")}>Filtrar</button>        
-        <button onClick={() => setFilter("tarefas")}>Tarefas</button>
-        <button onClick={() => setFilter("recados")}>Recados</button>
-        <button onClick={() => setFilter("anotacoes")}>Anotações</button>
-      </div>
+      <NotesFilter setFilter={setFilter} />
       <NoteList notes={notes} filterNotes={filterNotes} handleRemove={handleRemove} />
       <NoteForm handleSubmit={handleSubmit} formData={formData} setFormData={setFormData} />      
     </div>
