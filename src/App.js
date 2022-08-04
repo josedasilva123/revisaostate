@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
+import EditForm from "./components/EditForm";
 
 function App() {
   const noteList = [
@@ -24,47 +25,39 @@ function App() {
     },
   ];
 
- 
+  const [notes, setNotes] = useState(noteList);
+  const [counter, setCounter] = useState(noteList.length);
+  const [currentNote, setCurrentNote] = useState(null);
 
-  const [notes, setNotes] = useState(noteList); 
-  const [formData, setFormData] = useState({
-    title: "",
-    text: "",
-  }); 
-  const [counter, setCounter] = useState(noteList.length); 
+  function submit(formData) {
+    const newNote = {
+      id: counter,
+      title: formData.title,
+      text: formData.text,
+    };
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (formData.title === "" || formData.text === "") {
-      alert("Preencha os campos antes de enviar");
-    } else {
-      const newNote = {
-        id: counter,
-        title: formData.title,
-        text: formData.text,
-      };
-      
-      setNotes([...notes, newNote]);
-
-      setCounter(counter + 1);
-
-      setFormData({
-        title: "",
-        text: "",
-      });
-    }
+    setNotes([...notes, newNote]);
+    setCounter(counter + 1);
   }
 
-  function handleRemove(id){
+  function handleRemove(id) {
     const newList = notes.filter((note) => note.id !== id);
     setNotes(newList);
   }
 
+  function selectNote(note){
+    setCurrentNote(note);
+  }
+
   return (
     <div className="App">
-      <NoteList notes={notes} handleRemove={handleRemove} />
-      <NoteForm handleSubmit={handleSubmit} formData={formData} setFormData={setFormData} />      
+      {currentNote && (
+        <EditForm currentNote={currentNote} setCurrentNote={setCurrentNote} notes={notes} setNotes={setNotes} /> 
+      )}
+      <NoteList notes={notes} handleRemove={handleRemove} selectNote={selectNote}/>
+      <NoteForm
+        submit={submit}
+      />
     </div>
   );
 }

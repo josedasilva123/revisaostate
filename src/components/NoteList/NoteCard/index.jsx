@@ -1,11 +1,12 @@
 import React from "react";
 
-const NoteCard = ({note, handleRemove}) => {
+const NoteCard = ({note, handleRemove, selectNote}) => {
   return (
     <li key={note.id}>
       <h2>{note.title}</h2>
-      <p>{note.text}</p>
+      <p>{note.text}</p>      
       <button onClick={() => handleRemove(note.id)}>Remover</button>
+      <button onClick={() => selectNote(note)}>Editar</button>
     </li>
   );
 };
