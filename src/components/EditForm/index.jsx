@@ -11,7 +11,8 @@ const EditForm = ({currentNote, setCurrentNote, notes, setNotes}) => {
 
   function submit(formData){
     const noteIndex = notes.findIndex((n) => n === currentNote);
-    const newNotes = [...notes]  
+    const newNotes = [...notes];
+
     newNotes[noteIndex].text = formData.text;
     setNotes(newNotes);
     setCurrentNote(null);
@@ -32,7 +33,7 @@ const EditForm = ({currentNote, setCurrentNote, notes, setNotes}) => {
             <input type="text" {...register('title')} disabled/>
             {errors.title?.message}
             <textarea  {...register('text')}></textarea>
-            {errors?.text?.message}
+            {errors.text?.message}
             <button>Alterar</button>
         </form>
     </div>
