@@ -5,12 +5,7 @@ const NoteForm = ({ handleSubmit, formData, setFormData }) => {
     <div>
         <form
           onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2rem",
-            padding: "4rem",
-          }}
+          class="form"
         >
           <input
             type="text"
