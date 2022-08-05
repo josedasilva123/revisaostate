@@ -45,19 +45,29 @@ function App() {
     setNotes(newList);
   }
 
-  function selectNote(note){
+  function selectNote(note) {
     setCurrentNote(note);
   }
 
   return (
     <div className="App">
-      {currentNote && (
-        <EditForm currentNote={currentNote} setCurrentNote={setCurrentNote} notes={notes} setNotes={setNotes} /> 
+      {currentNote ? (
+        <EditForm
+          currentNote={currentNote}
+          setCurrentNote={setCurrentNote}
+          notes={notes}
+          setNotes={setNotes}
+        />
+      ) : (
+        <>
+          <NoteList
+            notes={notes}
+            handleRemove={handleRemove}
+            selectNote={selectNote}
+          />
+          <NoteForm submit={submit} />
+        </>
       )}
-      <NoteList notes={notes} handleRemove={handleRemove} selectNote={selectNote}/>
-      <NoteForm
-        submit={submit}
-      />
     </div>
   );
 }

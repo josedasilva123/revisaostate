@@ -14,13 +14,9 @@ const NoteForm = ({submit}) => {
   return (
     <div>
         <form
+          class="form"
           onSubmit={handleSubmit(submit)}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "2rem",
-            padding: "4rem",
-          }}
+  
         >
           <input
             type="text"
