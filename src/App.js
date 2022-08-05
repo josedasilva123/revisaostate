@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import NoteForm from "./components/NoteForm";
 import NoteList from "./components/NoteList";
+import EditForm from "./components/EditForm";
 
 function App() {
   const noteList = [
@@ -24,55 +25,40 @@ function App() {
     },
   ];
 
-  /* GET / SET --- useState(valorInicial) */
 
-  const [notes, setNotes] = useState(noteList); //Estado que recebe a lista de notas
-  const [formData, setFormData] = useState({
-    title: "",
-    text: "",
-  }); //Estado que recebe os valores dos campos do formulário e condensa em um objeto
-  const [counter, setCounter] = useState(noteList.length); //Contador com valor inicial com base na lista
+  const [notes, setNotes] = useState(noteList); 
+  const [currentNote, setCurrentNote] = useState(null); //Estado para conter a nota seleciona (nota que será editada)
+  const [counter, setCounter] = useState(noteList.length);   
 
-  /* Função de criação de notas por meio submit de formulário */
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    //Validação simples para verificar se os campos estão preenchidos
-    if (formData.title === "" || formData.text === "") {
-      alert("Preencha os campos antes de enviar");
-    } else {
-      //Criar um nova nota, pegando o counter como id os valores do formData para os demais campos
+  function submit(formData) {
       const newNote = {
         id: counter,
         title: formData.title,
         text: formData.text,
       };
-
-      //Altera o estado de notas, pegando todas as notas atuais e adicionando a nova nota
+     
       setNotes([...notes, newNote]);
-
-      //Incrementa o contador para evitar ids repetidos
-      setCounter(counter + 1);
-
-      //Limpa os campos do formulário, atribuindo valores vazios a title e text
-      setFormData({
-        title: "",
-        text: "",
-      });
-    }
+      
+      setCounter(counter + 1);    
   }
 
-  //Função de remover
-  function handleRemove(id){
-    //Filtragem mantendo todos os itens com exceção do que a id do enviado (remoção de item)
+  
+  function handleRemove(id){    
     const newList = notes.filter((note) => note.id !== id);
-    setNotes(newList); //Atribui a newList como valor de notes
+    setNotes(newList); 
   }
 
   return (
     <div className="App">
-      <NoteList notes={notes} handleRemove={handleRemove} />
-      <NoteForm handleSubmit={handleSubmit} formData={formData} setFormData={setFormData} />      
+      { /* Renderização condicional para exibir componente de edição */}
+      {currentNote ? (
+        <EditForm currentNote={currentNote} setCurrentNote={setCurrentNote} notes={notes} setNotes={setNotes} />
+      ) : (
+        <>
+          <NoteList notes={notes} handleRemove={handleRemove} setCurrentNote={setCurrentNote} />
+          <NoteForm submit={submit} />  
+        </>
+      )}          
     </div>
   );
 }

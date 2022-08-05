@@ -1,23 +1,32 @@
 import React from 'react'
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
-const NoteForm = ({ handleSubmit, formData, setFormData }) => {
+const NoteForm = ({submit}) => {
+  const formSchema = yup.object().shape({
+    title: yup.string().required('O título é obrigatório!').max(150, 'O título não pode ser superior a 150 caracteres.'),
+    text: yup.string().required('O texto é obrigatório!').min(50, "O texto precisa conter pelo menos 50 caracteres"),
+  })
+  const { register, handleSubmit, formState: {errors}} = useForm({
+    resolver: yupResolver(formSchema),
+  })
   return (
     <div>
         <form
-          onSubmit={handleSubmit}
-          class="form"
+          onSubmit={handleSubmit(submit)}
+          className="form"
         >
           <input
             type="text"
-            value={formData.title}
-            onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
-            }
+            {...register("title")}
+            maxLength={150}
           />
+          {errors.title?.message && <p className="errors">{errors.title.message}</p>}
           <textarea
-            value={formData.text}
-            onChange={(e) => setFormData({ ...formData, text: e.target.value })}
+            {...register("text")}
           ></textarea>
+          {errors.text?.message && <p className="errors">{errors.text.message}</p>}
           <button>Adicionar a nota</button>
         </form>
       </div>
