@@ -13,14 +13,9 @@ function App() {
 
   return (
     <div className="App">
-      {currentNote ? (
-        <EditForm />
-      ) : (
-        <>
+      {currentNote && <EditForm />}        
           <NoteList />
-          <NoteForm />  
-        </>
-      )}          
+          <NoteForm />
     </div>
   );
 }
