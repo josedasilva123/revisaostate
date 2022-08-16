@@ -1,29 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import { NotesContext } from '../../contexts/NotesContext';
 
-const EditForm = ({currentNote, setCurrentNote, notes, setNotes}) => {
-  //Esquema de validação
+const EditForm = () => {
+  const { currentNote, setCurrentNote, editNote } = useContext(NotesContext);
+
   const formSchema = yup.object().shape({
     title: yup.string().required('O título é obrigatório!').max(150, 'O título não pode ser superior a 150 caracteres.'),
     text: yup.string().required('O texto é obrigatório!').min(50, "O texto precisa conter pelo menos 50 caracteres"),
   })
-
-  function submit(formData){
-    //Descobrindo o index da nota selecionada
-    const noteIndex = notes.indexOf(currentNote);
-    //Criando uma copia do estado note
-    const newNotes = [...notes];
-
-    //Realizando a mutanção na copia
-    newNotes[noteIndex].text = formData.text;
-
-    //Mandando a nova lista(mutada) para o estado de notas
-    setNotes(newNotes);
-    //Limpando a seleção de nota
-    setCurrentNote(null);
-  }
 
   const { register, handleSubmit, formState: {errors}} = useForm({
     resolver: yupResolver(formSchema),
@@ -32,10 +19,11 @@ const EditForm = ({currentNote, setCurrentNote, notes, setNotes}) => {
       text: currentNote.text,
     }
   })
+
   return (
     <div>
       <button onClick={() => setCurrentNote(null)}>Fechar</button>
-      <form onSubmit={handleSubmit(submit)} className="form">
+      <form onSubmit={handleSubmit(editNote)} className="form">
         <input type="text" {...register('title')} disabled/>
         {errors.title?.message && <p className="errors">{errors.title.message}</p>}
         <textarea {...register('text')}></textarea>

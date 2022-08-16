@@ -1,11 +1,13 @@
-import React from "react";
+import React, {useContext} from "react";
+import { NotesContext } from "../../contexts/NotesContext";
 import NoteCard from "./NoteCard";
 
-const NoteList = ({ notes, handleRemove, setCurrentNote }) => {
+const NoteList = () => {
+  const { notes } = useContext(NotesContext);
   return (
     <div>
       {notes.map((note) => (
-        <NoteCard key={note.id} note={note} handleRemove={handleRemove} setCurrentNote={setCurrentNote} />
+        <NoteCard key={note.id} note={note} />
       ))}
     </div>
   );

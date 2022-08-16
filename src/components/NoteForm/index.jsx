@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { NotesContext } from '../../contexts/NotesContext';
 
-const NoteForm = ({submit}) => {
+const NoteForm = () => {
+  const { createNote } = useContext(NotesContext);
   const formSchema = yup.object().shape({
     title: yup.string().required('O título é obrigatório!').max(150, 'O título não pode ser superior a 150 caracteres.'),
     text: yup.string().required('O texto é obrigatório!').min(50, "O texto precisa conter pelo menos 50 caracteres"),
@@ -11,10 +13,11 @@ const NoteForm = ({submit}) => {
   const { register, handleSubmit, formState: {errors}} = useForm({
     resolver: yupResolver(formSchema),
   })
+
   return (
     <div>
         <form
-          onSubmit={handleSubmit(submit)}
+          onSubmit={handleSubmit(createNote)}
           className="form"
         >
           <input

@@ -1,11 +1,14 @@
-import React from "react";
+import React, {useContext} from "react";
+import { NotesContext } from "../../../contexts/NotesContext";
 
-const NoteCard = ({note, handleRemove, setCurrentNote}) => {
+const NoteCard = ({note}) => {
+  const { removeNote, setCurrentNote } = useContext(NotesContext);
+
   return (
     <li key={note.id}>
       <h2>{note.title}</h2>
       <p>{note.text}</p>
-      <button onClick={() => handleRemove(note.id)}>Remover</button>
+      <button onClick={() => removeNote(note.id)}>Remover</button>
       <button onClick={() => setCurrentNote(note)}>Editar</button>
     </li>
   );
