@@ -1,15 +1,16 @@
 import React, {useContext} from "react";
 import { NotesContext } from "../../contexts/NotesContext";
 import NoteCard from "./NoteCard";
+import { StyledNoteList } from "./style";
 
 const NoteList = () => {
   const { notes } = useContext(NotesContext);
   return (
-    <div>
+    <StyledNoteList>
       {notes.map((note) => (
         <NoteCard key={note.id} note={note} />
       ))}
-    </div>
+    </StyledNoteList>
   );
 };
 

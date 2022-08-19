@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef } from "react";
 
 export const useOutsideClick = (callbackFunction) => {
@@ -13,7 +14,6 @@ export const useOutsideClick = (callbackFunction) => {
       }
     }
 
-    //Adicionando evento handleOutclick na montagem
     document.addEventListener('mousedown', handleOutclick);
 
     //Removendo evento handleOutclick desmontagem

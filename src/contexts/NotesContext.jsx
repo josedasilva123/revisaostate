@@ -1,4 +1,5 @@
 import { useState, createContext } from "react";
+import { toast } from "react-toastify"
 
 export const NotesContext = createContext({});
 
@@ -35,11 +36,13 @@ export const NotesProvider = ({ children }) => {
     setNotes([...notes, newNote]);
 
     setCounter(counter + 1);
+    toast.success('Nota adicionada com sucesso!')
   }
 
   function removeNote(id) {
     const newList = notes.filter((note) => note.id !== id);
     setNotes(newList);
+    toast.success('Nota removida com sucesso!')
   }
   
   function editNote(formData){
@@ -51,6 +54,7 @@ export const NotesProvider = ({ children }) => {
     
     setNotes(newNotes);    
     setCurrentNote(null);
+    toast.success('Nota alterada com sucesso!')
   }
 
   /* Export */

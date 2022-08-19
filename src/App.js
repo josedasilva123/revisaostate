@@ -1,21 +1,18 @@
-import "./App.css";
+import { ToastContainer } from "react-toastify";
 
-import { useContext, useState } from "react";
-
-import NoteForm from "./components/NoteForm";
-import NoteList from "./components/NoteList";
-import EditForm from "./components/EditForm";
-import { NotesContext } from "./contexts/NotesContext";
+import PageHome from "./pages/Home";
+import 'react-toastify/dist/ReactToastify.css';
+import PageLogin from "./pages/Login";
+import PageRegister from "./pages/Register";
 
 function App() {  
-  /* import {} from NotesContext */
-  const {currentNote} = useContext(NotesContext);
 
   return (
     <div className="App">
-      {currentNote && <EditForm />}        
-          <NoteList />
-          <NoteForm />
+      <PageHome />
+      <PageLogin />
+      <PageRegister />
+      <ToastContainer autoClose={2000} />
     </div>
   );
 }

@@ -7,6 +7,8 @@ import { NotesContext } from '../../contexts/NotesContext';
 import { EditModal } from './styles';
 import { MdClose } from "react-icons/md"
 import { useOutsideClick } from '../../hooks/useOutsideClick';
+import { Form, FormInput, FormTextarea } from '../../styles/form';
+import { Button } from '../../styles/buttons';
 
 const EditForm = () => {
   const { currentNote, setCurrentNote, editNote } = useContext(NotesContext);
@@ -35,13 +37,15 @@ const EditForm = () => {
         <button onClick={() => setCurrentNote(null)} className="close">
           <MdClose size={24} />
         </button>
-        <form onSubmit={handleSubmit(editNote)} className="form">
-          <input type="text" {...register('title')} disabled/>
+        <Form onSubmit={handleSubmit(editNote)}>
+          <FormInput type="text" {...register('title')} disabled/>
           {errors.title?.message && <p className="errors">{errors.title.message}</p>}
-          <textarea {...register('text')}></textarea>
+
+          <FormTextarea {...register('text')}></FormTextarea>
           {errors.text?.message && <p className="errors">{errors.text.message}</p>}
-          <button>Atualizar</button>
-        </form>
+
+          <Button tag="button" fullWidth={true} type="submit">Atualizar</Button>
+        </Form>
       </div>
     </EditModal>
   )
