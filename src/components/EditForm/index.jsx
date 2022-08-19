@@ -44,7 +44,7 @@ const EditForm = () => {
           <FormTextarea {...register('text')}></FormTextarea>
           {errors.text?.message && <p className="errors">{errors.text.message}</p>}
 
-          <Button tag="button" fullWidth={true} type="submit">Atualizar</Button>
+          <Button tag="button" type="submit">Atualizar</Button>
         </Form>
       </div>
     </EditModal>

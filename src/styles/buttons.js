@@ -18,14 +18,6 @@ export const Button = styled(BaseButton)`
 
     transition: .3s;
 
-    ${({fullWidth}) => {
-        if(fullWidth){
-            return css`
-                width: 100%;
-            `
-        }
-    }}
-
     &:hover{
         filter: brightness(1.1);
     }

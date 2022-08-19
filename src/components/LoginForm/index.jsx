@@ -42,7 +42,7 @@ const LoginForm = () => {
             <p className="errors">{errors.password.message}</p>
         )}          
 
-        <Button tag="button" type="submit" fullWidth={true} disabled={loading}>
+        <Button tag="button" type="submit" disabled={loading}>
           {loading ? 'Entrando...' : 'Entrar'}
         </Button>
       </Form>

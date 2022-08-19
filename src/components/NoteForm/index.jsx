@@ -41,7 +41,7 @@ const NoteForm = () => {
           <p className="errors">{errors.text.message}</p>
         )}
 
-        <Button tag="button" type="submit" fullWidth={true} disabled={loading}>
+        <Button tag="button" type="submit" disabled={loading}>
           {loading ? 'Cadastrando...' : 'Cadastrar'}
         </Button>
       </Form>
