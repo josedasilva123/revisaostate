@@ -13,7 +13,7 @@ const NoteCard = ({note}) => {
         <p>{note.text}</p>
       </div>
       <div className="controls">
-      <button onClick={() => removeNote(note.id)}>
+      <button onClick={() => removeNote(note._id)}>
         <MdDelete size={24} />
       </button>
       <button onClick={() => setCurrentNote(note)}>

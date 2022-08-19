@@ -8,7 +8,7 @@ const NoteList = () => {
   return (
     <StyledNoteList>
       {notes.map((note) => (
-        <NoteCard key={note.id} note={note} />
+        <NoteCard key={note._id} note={note} />
       ))}
     </StyledNoteList>
   );

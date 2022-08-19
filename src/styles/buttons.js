@@ -29,4 +29,9 @@ export const Button = styled(BaseButton)`
     &:hover{
         filter: brightness(1.1);
     }
+
+    &::disabled{
+        cursor: not-allowed;
+        opacity: .5;
+    }
 `

@@ -1,18 +1,24 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { NotesProvider } from './contexts/NotesContext';
-import { GlobalStyle } from './styles/global';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { NotesProvider } from "./contexts/NotesContext";
+import { GlobalStyle } from "./styles/global";
+import { BrowserRouter } from "react-router-dom";
+import { UserProvider } from "./contexts/UserContext";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <NotesProvider>
-      <GlobalStyle />
-      <App />
-    </NotesProvider>    
+    <BrowserRouter>
+      <UserProvider>
+        <NotesProvider>
+          <GlobalStyle />
+          <App />
+        </NotesProvider>
+      </UserProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

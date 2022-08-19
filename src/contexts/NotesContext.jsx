@@ -1,48 +1,80 @@
-import { useState, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { toast } from "react-toastify"
+import { api } from "../api/api";
+import { UserContext } from "./UserContext";
 
 export const NotesContext = createContext({});
 
-export const NotesProvider = ({ children }) => {
-  const noteList = [
-    {
-      id: 0,
-      title: "Nota 1",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
-    },
-    {
-      id: 1,
-      title: "Nota 2",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
-    },
-    {
-      id: 2,
-      title: "Nota 3",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in placerat orci. Vestibulum sit amet dapibus elit. Nullam bibendum nulla in ex elementum convallis.",
-    },
-  ];
+export const NotesProvider = ({ children }) => { 
+  const { user } = useContext(UserContext);
+  const [notes, setNotes] = useState();
+  const [currentNote, setCurrentNote] = useState(null); 
 
-  const [notes, setNotes] = useState(noteList);
-  const [currentNote, setCurrentNote] = useState(null); //Estado para conter a nota seleciona (nota que será editada)
-  const [counter, setCounter] = useState(noteList.length);
+  //Nesta api é necessário uma requisição
+  useEffect(() => {
+    const token = localStorage.getItem('@TOKEN');
 
-  function createNote(formData) {
-    const newNote = {
-      id: counter,
-      title: formData.title,
-      text: formData.text,
-    };
+    async function getNotes(){
+      try {        
+        const response = await api.get('notes', {
+          headers: {
+            auth: token,
+          }
+        })        
+        setNotes(response.data.response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-    setNotes([...notes, newNote]);
+    //Executa função somente com usuário válido e token
+    if(user && token){
+      getNotes();
+    } else {
+      //Do contrario limpa notas
+      setNotes([]);
+    }     
 
-    setCounter(counter + 1);
-    toast.success('Nota adicionada com sucesso!')
+  }, [user]);
+
+  async function createNote(formData, setLoading){
+    try {
+      setLoading(true);
+      const token = localStorage.getItem('@TOKEN');
+      const response = await api.post('notes', formData, {
+        headers: {
+          auth: token
+        }
+      })
+      //Mesmo com a requisição a renderização na interface 
+      setNotes([...notes, response.data.response]);
+      toast.success(response.data.message);
+    } catch (error) {
+      toast.error(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
   }
 
-  function removeNote(id) {
+  async function removeNote(id) {
+    try {
+      const token = localStorage.getItem('@TOKEN');
+      const response = await api.delete(`notes/${id}`, {
+        headers: {
+          auth: token,
+        }
+      })
+      toast.success(response.data.message);
+      const newList = notes.filter((note) => note._id !== id);
+      setNotes(newList);
+    } catch (error) {
+      toast.error(error.response.data.error);  
+    }
+    /*
     const newList = notes.filter((note) => note.id !== id);
     setNotes(newList);
     toast.success('Nota removida com sucesso!')
+    */
   }
   
   function editNote(formData){
