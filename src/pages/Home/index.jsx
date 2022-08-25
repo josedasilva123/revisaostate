@@ -7,7 +7,7 @@ import { NotesContext } from "../../contexts/NotesContext";
 import { UserContext } from "../../contexts/UserContext";
 import { Container } from "../../styles/global";
 import { StyledPageHome } from "./style";
-import { useNavigate } from "react-router-dom";
+import Header from "../../components/Header";
 
 const PageHome = () => {
   const { user } = useContext(UserContext);
@@ -18,6 +18,7 @@ const PageHome = () => {
       
       {currentNote && <EditForm />}
       <Container>
+        <Header />
         <div className="userBox">
           <h1>{user.name}</h1>
           <p>{user.email}</p>

@@ -7,6 +7,7 @@ import { NotesProvider } from "./contexts/NotesContext";
 import { GlobalStyle } from "./styles/global";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./contexts/UserContext";
+import { ToastProvider } from "./contexts/ToastContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -14,8 +15,10 @@ root.render(
     <BrowserRouter>
       <UserProvider>
         <NotesProvider>
-          <GlobalStyle />
-          <App />
+          <ToastProvider>
+            <GlobalStyle />
+            <App />
+          </ToastProvider>
         </NotesProvider>
       </UserProvider>
     </BrowserRouter>

@@ -2,6 +2,7 @@ import styled, {css} from "styled-components";
 import BaseButton from "./components/button";
 
 export const Button = styled(BaseButton)`
+    width: 100%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -10,13 +11,32 @@ export const Button = styled(BaseButton)`
     font-weight: 600;
     border-radius: 4px;
 
-    padding: 2rem 0;
+    padding: 0 2rem;
     height: 48px;
 
-    background: var(--green);
-    color: var(--white);
+    
 
     transition: .3s;
+
+    ${({outline}) => {
+        switch(outline){
+            case true:
+                return css`
+                    background: transparent;
+                    border: 1px solid var(--green);
+                    color: var(--green);
+                    &:hover{
+                        background: var(--green);
+                        color: var(--white);
+                    }
+                `
+            default:    
+                return css`
+                    background: var(--green);
+                    color: var(--white);
+                `
+        }
+    }}
 
     &:hover{
         filter: brightness(1.1);
