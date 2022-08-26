@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { Outlet } from "react-router-dom"
 import { UserContext } from '../../contexts/UserContext'
 
-const PageLoading = ({children}) => {
+const PageLoading = () => {
   const { userLoading } = useContext(UserContext); 
   return (
     <>

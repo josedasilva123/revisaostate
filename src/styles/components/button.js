@@ -1,4 +1,3 @@
-import React from 'react'
 
 const BaseButton = ({ children, type, tag, href, target, ...res }) => {
   return (

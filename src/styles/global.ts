@@ -26,13 +26,17 @@ export const GlobalStyle = createGlobalStyle`
     }
 `
 
+interface IContainerProps{
+    small?: boolean;
+}
+
 export const Container = styled.div`
     width: 100%;
     max-width: 1300px;
     margin: 0 auto;
     padding: 1rem;
 
-    ${({small}) => {
+    ${({small}: IContainerProps) => {
         if(small){
             return css`
                 max-width: 750px;

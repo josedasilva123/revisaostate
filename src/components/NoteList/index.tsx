@@ -7,7 +7,7 @@ const NoteList = () => {
   const { notes } = useContext(NotesContext);
   return (
     <StyledNoteList>
-      {notes.map((note) => (
+      {notes?.map((note) => (
         <NoteCard key={note._id} note={note} />
       ))}
     </StyledNoteList>

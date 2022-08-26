@@ -1,13 +1,47 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import { toast } from "react-toastify";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
-export const UserContext = createContext({});
+export interface IFormRegister{
+    name: string;
+    email: string;
+    password: string;
+}
 
-export const UserProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+export interface IFormLogin{
+    email: string;
+    password: string;
+}
+
+interface IUser{
+   id: string;
+   name: string;
+   email: string; 
+}
+
+interface IUserContext{
+    user: IUser | null;
+    registerUser: (formData: IFormRegister, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    loginUser: (formData: IFormLogin, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    logoutUser: () => void;
+    userLoading: boolean;
+}
+
+interface IUserProvider{
+    children: React.ReactNode;
+}
+
+interface IError{
+    error: string;
+}
+
+export const UserContext = createContext<IUserContext>({} as IUserContext);
+
+export const UserProvider = ({children}: IUserProvider) => {
+    const [user, setUser] = useState<IUser | null>(null);
     const [userLoading, setUserLoading] = useState(false);//Estado de loading para outlet de PageLoading
     const navigate = useNavigate();
 
@@ -19,7 +53,7 @@ export const UserProvider = ({children}) => {
         try {
             const response = await api.post('user/autologin', {},{
                 headers: {
-                    auth: token,
+                    auth: token as string,
                 }
             })
             setUser(response.data.user); // Nunca esquecer de setar estado após requisição
@@ -39,7 +73,7 @@ export const UserProvider = ({children}) => {
        }       
     }, [])
 
-    async function registerUser(formData, setLoading){
+    async function registerUser(formData: IFormRegister, setLoading: React.Dispatch<React.SetStateAction<boolean>>){
         try {
             setLoading(true);
             await api.post('user', formData); //Cadastrado
@@ -49,13 +83,14 @@ export const UserProvider = ({children}) => {
                 navigate('/');
             }, 2000);
         } catch (error) {
-            toast.error(error.response.data.error);
+            const serverError = error as AxiosError<IError>;
+            toast.error(serverError.response?.data.error);
         } finally {
             setLoading(false);
         }
     }
 
-    async function loginUser(formData, setLoading){
+    async function loginUser(formData: IFormLogin, setLoading: React.Dispatch<React.SetStateAction<boolean>>){
         try {
             setLoading(true);
             const response = await api.post('user/login', formData);
@@ -67,7 +102,8 @@ export const UserProvider = ({children}) => {
                 navigate('/dashboard');
             }, 2000);
         } catch (error) {
-            toast.error(error.response.data.error);
+            const serverError = error as AxiosError<IError>;
+            toast.error(serverError.response?.data.error);
         } finally {
             setLoading(false);
         }

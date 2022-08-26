@@ -1,14 +1,53 @@
-import { useState, useEffect, createContext, useContext } from "react";
+import { AxiosError } from "axios";
+import React, { useState, useEffect, createContext, useContext } from "react";
+import { SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify"
 import { api } from "../api/api";
 import { UserContext } from "./UserContext";
 
-export const NotesContext = createContext({});
+export interface IFormCreateNote{
+  title: string;
+  text: string;
+}
 
-export const NotesProvider = ({ children }) => { 
+export interface IFormEditNote{
+  title: string;
+  text: string;
+}
+
+export interface INote{
+  _id: string;
+  userID: string;
+  title: string;
+  text:  string;
+  createdAt: string;
+  updatedAt: string; 
+  __v: number;
+}
+
+interface INotesContext{
+  notes: INote[];
+  currentNote: INote | null;
+  setCurrentNote: React.Dispatch<React.SetStateAction<INote | null>>;
+  createNote: (formData: IFormCreateNote, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+  removeNote: (id: string) => void;
+  editNote: SubmitHandler<IFormEditNote>;
+}
+
+interface INotesProps{
+  children: React.ReactNode;
+}
+
+interface IError{
+  error: string;
+}
+
+export const NotesContext = createContext<INotesContext>({} as INotesContext);
+
+export const NotesProvider = ({ children }: INotesProps) => { 
   const { user } = useContext(UserContext);
-  const [notes, setNotes] = useState();
-  const [currentNote, setCurrentNote] = useState(null); 
+  const [notes, setNotes] = useState<INote[]>([] as INote[]);
+  const [currentNote, setCurrentNote] = useState<INote | null>(null); 
 
   //Nesta api é necessário uma requisição
   useEffect(() => {
@@ -18,7 +57,7 @@ export const NotesProvider = ({ children }) => {
       try {        
         const response = await api.get('notes', {
           headers: {
-            auth: token,
+            auth: token as string,
           }
         })        
         setNotes(response.data.response);
@@ -37,38 +76,40 @@ export const NotesProvider = ({ children }) => {
 
   }, [user]);
 
-  async function createNote(formData, setLoading){
+  async function createNote(formData: IFormCreateNote, setLoading: React.Dispatch<React.SetStateAction<boolean>>){
     try {
       setLoading(true);
       const token = localStorage.getItem('@TOKEN');
       const response = await api.post('notes', formData, {
         headers: {
-          auth: token
+          auth: token as string,
         }
       })
       //Mesmo com a requisição a renderização na interface 
       setNotes([...notes, response.data.response]);
       toast.success(response.data.message);
     } catch (error) {
-      toast.error(error.response.data.error);
+      const serverError = error as AxiosError<IError>;
+      toast.error(serverError.response?.data.error);
     } finally {
       setLoading(false);
     }
   }
 
-  async function removeNote(id) {
+  async function removeNote(id: string) {
     try {
       const token = localStorage.getItem('@TOKEN');
       const response = await api.delete(`notes/${id}`, {
         headers: {
-          auth: token,
+          auth: token as string,
         }
       })
       toast.success(response.data.message);
       const newList = notes.filter((note) => note._id !== id);
       setNotes(newList);
     } catch (error) {
-      toast.error(error.response.data.error);  
+      const serverError = error as AxiosError<IError>;
+      toast.error(serverError.response?.data.error);
     }
     /*
     const newList = notes.filter((note) => note.id !== id);
@@ -77,8 +118,8 @@ export const NotesProvider = ({ children }) => {
     */
   }
   
-  function editNote(formData){
-    const noteIndex = notes.indexOf(currentNote);
+  const editNote: SubmitHandler<IFormEditNote> = (formData) => {
+    const noteIndex = notes.indexOf(currentNote as INote);
     
     const newNotes = [...notes];
     

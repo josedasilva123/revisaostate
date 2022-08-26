@@ -1,9 +1,13 @@
 import React, {useContext} from "react";
-import { NotesContext } from "../../../contexts/NotesContext";
+import { INote, NotesContext } from "../../../contexts/NotesContext";
 import { StyledNoteCard } from "./style";
 import { MdDelete, MdEdit} from "react-icons/md";
 
-const NoteCard = ({note}) => {
+interface INoteCardsProps{
+  note: INote;
+}
+
+const NoteCard = ({note}: INoteCardsProps) => {
   const { removeNote, setCurrentNote } = useContext(NotesContext);
 
   return (

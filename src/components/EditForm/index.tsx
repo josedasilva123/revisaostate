@@ -3,7 +3,7 @@ import React, { useContext } from 'react'
 import * as yup from 'yup';
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
-import { NotesContext } from '../../contexts/NotesContext';
+import { IFormEditNote, NotesContext } from '../../contexts/NotesContext';
 import { EditModal } from './styles';
 import { MdClose } from "react-icons/md"
 import { useOutsideClick } from '../../hooks/useOutsideClick';
@@ -18,16 +18,17 @@ const EditForm = () => {
     text: yup.string().required('O texto é obrigatório!').min(50, "O texto precisa conter pelo menos 50 caracteres"),
   })
 
-  const { register, handleSubmit, formState: {errors}} = useForm({
+  const { register, handleSubmit, formState: {errors}} = useForm<IFormEditNote>({
     resolver: yupResolver(formSchema),
     defaultValues: {
-      title: currentNote.title,
-      text: currentNote.text,
+      title: currentNote?.title,
+      text: currentNote?.text,
     }
   })
 
   //Instanciando hook customizado e passando comportamento desejado como função callback
-  const modalRef = useOutsideClick(() => {
+  //Arrumar depois
+  const modalRef: any = useOutsideClick(() => {
     setCurrentNote(null);
   })
 
