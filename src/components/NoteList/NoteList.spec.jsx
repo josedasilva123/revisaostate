@@ -36,6 +36,7 @@ describe("<NoteList />", () => {
 
     expect(screen.getByText("Nota 1")).toBeInTheDocument();
     expect(screen.getByText("Nota 2")).toBeInTheDocument();
+    expect(screen.getAllByRole('heading')).toHaveLength(2);
   });
 
   it("should render no note message and notes is empty", () => {
@@ -50,6 +51,7 @@ describe("<NoteList />", () => {
     );
 
     expect(screen.getByText(/Nenhuma nota cadastrada/i)).toBeInTheDocument();
+
   });
 
   it("should match snapshot", () => {
