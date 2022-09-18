@@ -17,7 +17,7 @@ const NoteCard = ({ note }: INoteCardsProps) => {
         <p>{note.text}</p>
       </div>
       <div className="controls">
-        <button onClick={() => removeNote(note._id)}>
+        <button onClick={() => removeNote(note._id)} title="Delete">
           <MdDelete size={24} />
         </button>
         {/** <button onClick={() => setCurrentNote(note)}>
