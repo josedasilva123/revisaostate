@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import EditForm from "../../components/EditForm";
 import NoteForm from "../../components/NoteForm";
 import NoteList from "../../components/NoteList";

@@ -7,7 +7,7 @@ import { StyledHeader } from './style'
 const Header = () => {
   const { logoutUser } = useContext(UserContext);  
   return (
-    <StyledHeader>
+    <StyledHeader role="header">
         <h1>Notes</h1>
         <Button tag="button" onClick={logoutUser}>Sair</Button>
     </StyledHeader>   

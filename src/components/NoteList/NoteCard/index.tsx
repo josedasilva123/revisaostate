@@ -17,10 +17,10 @@ const NoteCard = ({note}: INoteCardsProps) => {
         <p>{note.text}</p>
       </div>
       <div className="controls">
-      <button onClick={() => removeNote(note._id)}>
+      <button onClick={() => removeNote(note._id)} className="delete">
         <MdDelete size={24} />
       </button>
-      <button onClick={() => setCurrentNote(note)}>
+      <button onClick={() => setCurrentNote(note)} className="edit">
         <MdEdit size={24} />
       </button>
       </div>      
