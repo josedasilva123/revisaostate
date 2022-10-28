@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 const PageLogin = () => {
   return (
-    <Container small={true}>
+    <Container small={true}>      
       <LoginForm />
       <Link to="/register">
         <Button tag="button" outline={true} style={{ marginTop: "1rem" }}>
