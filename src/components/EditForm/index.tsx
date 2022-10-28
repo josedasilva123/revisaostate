@@ -28,7 +28,7 @@ const EditForm = () => {
 
   //Instanciando hook customizado e passando comportamento desejado como função callback
   //Arrumar depois
-  const modalRef: any = useOutsideClick(() => {
+  const modalRef = useOutsideClick<HTMLDivElement>(() => {
     setCurrentNote(null);
   })
 

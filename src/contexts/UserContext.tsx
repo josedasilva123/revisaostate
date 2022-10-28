@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import { UseFormReset } from "react-hook-form";
 
 export interface IFormRegister{
     name: string;
