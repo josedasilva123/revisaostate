@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { api } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import { UseFormReset } from "react-hook-form";
 
 export interface IFormRegister{
     name: string;
@@ -25,7 +26,7 @@ interface IUser{
 interface IUserContext{
     user: IUser | null;
     registerUser: (formData: IFormRegister, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
-    loginUser: (formData: IFormLogin, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => void;
+    loginUser: (formData: IFormLogin, setLoading: React.Dispatch<React.SetStateAction<boolean>>, callback: (response: any) => void) => void;
     logoutUser: () => void;
     userLoading: boolean;
 }
@@ -90,7 +91,7 @@ export const UserProvider = ({children}: IUserProvider) => {
         }
     }
 
-    async function loginUser(formData: IFormLogin, setLoading: React.Dispatch<React.SetStateAction<boolean>>){
+    async function loginUser(formData: IFormLogin, setLoading: React.Dispatch<React.SetStateAction<boolean>>, callback: (response: any) => void){
         try {
             setLoading(true);
             const response = await api.post('user/login', formData);
@@ -98,6 +99,9 @@ export const UserProvider = ({children}: IUserProvider) => {
             localStorage.setItem('@TOKEN', response.data.token);
             //Timeout para redirecionar após o ocultamento do toast
             toast.success('Login efetuado com sucesso!');
+            if(callback){
+                callback(response.data);
+            }
             setTimeout(() => {
                 navigate('/dashboard');
             }, 2000);

@@ -8,7 +8,7 @@ import { IFormLogin, UserContext } from "../../contexts/UserContext";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
-  const { loginUser } = useContext(UserContext);
+  const { loginUser } = useContext(UserContext); /* import */
 
   const formSchema = yup.object().shape({
     email: yup
@@ -23,12 +23,17 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<IFormLogin>({
     resolver: yupResolver(formSchema),
   });
 
   const onSubmit: SubmitHandler<IFormLogin> = (formData) => {
-    loginUser(formData, setLoading);
+    loginUser(formData, setLoading, (data: any) => {
+      alert("Seja feliz!");
+      console.log(data);
+      reset();
+    });
   } 
 
   return (

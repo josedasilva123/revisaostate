@@ -86,7 +86,7 @@ export const NotesProvider = ({ children }: INotesProps) => {
         }
       })
       //Mesmo com a requisição a renderização na interface 
-      setNotes([...notes, response.data.response]);
+      setNotes([...notes, response.data.response]); 
       toast.success(response.data.message);
     } catch (error) {
       const serverError = error as AxiosError<IError>;
